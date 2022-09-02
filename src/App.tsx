@@ -1,11 +1,25 @@
-import React from "react";
+import React, { ReactElement } from "react";
+import { Routes, Route } from "react-router-dom";
 
-import Directory from "./components/category-item/directory/directory.component";
+import Navigation from "./routes/navigation/navigation.component";
+import Home from "./routes/home/home.component";
+
+const Shop : React.FC = () : ReactElement => {
+  return(
+    <div>
+      <h2>SHOP</h2>
+    </div>
+  )
+}
 
 const App = () => {
-  
   return (
-    <Directory />
+    <Routes>
+      <Route path="/" element={<Navigation />}>
+        <Route index element={<Home />}/>
+        <Route path="shop" element={<Shop />}/>
+      </Route>
+    </Routes>
   );
 };
 
