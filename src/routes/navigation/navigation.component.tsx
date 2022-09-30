@@ -1,10 +1,13 @@
+import { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
+import { GlobalUserContext } from "../../context/user.context";
 
+import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 import './navigation.styles.scss';
 
 const Navigation = () => {
+  const {currentUser} = useContext(GlobalUserContext);
   return (
     <>
       <div className="navigation">
@@ -16,7 +19,7 @@ const Navigation = () => {
             SHOP
           </Link>
           <Link className="nav-link" to="/auth">
-            SIGN IN
+            {!currentUser ? 'SIGN IN' : 'SIGN OUT'}
           </Link>
         </div>
       </div>
