@@ -18,9 +18,10 @@ const Navigation = () => {
           <Link className="nav-link" to="/shop">
             SHOP
           </Link>
-          <Link className="nav-link" to="/auth">
-            {!currentUser ? 'SIGN IN' : 'SIGN OUT'}
-          </Link>
+          {!currentUser
+            ? <Link className="nav-link" to="/auth">SIGN IN</Link>
+            : <span className="nav-link">Sign out</span>
+          }
         </div>
       </div>
       <Outlet />
