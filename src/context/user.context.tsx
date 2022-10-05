@@ -4,7 +4,13 @@ import {
   ReactNode,
   SetStateAction,
   useState,
+  useEffect,
 } from "react";
+
+import {
+  createUserDocumentFromAuth,
+  onAuthStateChangedListener,
+} from "../utils/firebase/firebase.utils";
 
 interface UserProviderInterface {
   children: ReactNode;
@@ -22,6 +28,12 @@ export const GlobalUserContext = createContext<UserContext>({
 
 export const UserProvider: React.FC<UserProviderInterface> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<object | null>(null);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+      user ? createUserDocumentFromAuth(user) : setCurrentUser(user);
+    });
+    return unsubscribe;
+  }, []);
   return (
     <GlobalUserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
