@@ -10,7 +10,7 @@ const Shop = (): JSX.Element => {
   return (
     <div className="products-container">
       {products.map((product: ProductType) => {
-        return <ProductCard key={product.id} {...product} />;
+        return <ProductCard {...product} />;
       })}
     </div>
   );

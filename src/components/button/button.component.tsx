@@ -6,11 +6,11 @@ interface ButtonProps {
   children: React.ReactNode,
   type?: 'submit' | 'reset' | 'button' | undefined,
   buttonType?: 'google' | 'inverted', 
-  onClickAction?: MouseEventHandler<HTMLButtonElement> | undefined,
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined,
 }
 
-const Button = ({ children, type, buttonType, onClickAction } : ButtonProps) => {
-  return <button className={`button-container ${buttonType}`} type={type} onClick={onClickAction}>{children}</button>;
+const Button: React.FC<ButtonProps> = ({ children, type, buttonType, onClick }) => {
+  return <button className={`button-container ${buttonType}`} type={type} onClick={onClick}>{children}</button>;
 };
 
 export default Button;
