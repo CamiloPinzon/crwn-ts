@@ -7,11 +7,14 @@ interface CartItemInterface {
 }
 
 const CartItem = ({ cartItem }: CartItemInterface) => {
-  const { name, quantity } = cartItem;
+  const { name, imageUrl, price, quantity } = cartItem;
   return (
-    <div>
-      <h2>{name}</h2>
-      <span>{quantity}</span>
+    <div className="cart-item-container">
+      <img src={imageUrl} alt={name}/>
+      <div className="item-details">
+        <span>{name}</span>
+        <span>{quantity} x ${price*quantity}</span>
+      </div>
     </div>
   );
 };

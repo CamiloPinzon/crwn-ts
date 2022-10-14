@@ -4,6 +4,7 @@ import {
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 
 import { ProductType } from "../types/product.type";
@@ -18,6 +19,8 @@ type CartContextType = {
   cartItems: ProductType[];
   setCartItems?: Dispatch<SetStateAction<ProductType[] | ProductType>>;
   addItemToCart: Dispatch<SetStateAction<any>>;
+  cartCount: number;
+  setCartCount?: Dispatch<SetStateAction<number>>;
 };
 
 const addCartItem = (
@@ -43,11 +46,22 @@ export const CartContext = createContext<CartContextType>({
   cartItems: [],
   setCartItems: () => {},
   addItemToCart: () => {},
+  cartCount: 0,
+  setCartCount: () => {},
 });
 
 export const CartProvider: React.FC<CartInterfacace> = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    setCartCount(
+      cartItems.reduce((total: number, cartItem:ProductType)=>{
+        return total + cartItem.quantity;
+      }, 0)
+    );
+  }, [cartItems]);
 
   const addItemToCart = (productToAdd: ProductType) => {
     setCartItems(addCartItem(cartItems, productToAdd));
@@ -55,7 +69,7 @@ export const CartProvider: React.FC<CartInterfacace> = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ isCartOpen, setIsCartOpen, addItemToCart, cartItems }}
+      value={{ isCartOpen, setIsCartOpen, addItemToCart, cartItems, cartCount }}
     >
       {children}
     </CartContext.Provider>
