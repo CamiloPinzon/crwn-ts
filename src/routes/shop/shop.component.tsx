@@ -1,9 +1,10 @@
 import { useContext } from "react";
 
-import { ProductsContext, ProductType } from "../../context/products.context";
+import { ProductsContext } from "../../context/products.context";
 import ProductCard from "../../components/product-card/product-card.component";
 
 import './shop.styles.scss';
+import { ProductType } from "../../types/product.type";
 
 const Shop = (): JSX.Element => {
   const { products } = useContext(ProductsContext);

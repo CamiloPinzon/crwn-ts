@@ -10,7 +10,6 @@
   top: 90px;
   right: 40px;
   z-index: 5;
-  overflow: hidden;
 
   .empty-message {
     font-size: 18px;
@@ -21,7 +20,7 @@
     height: 240px;
     display: flex;
     flex-direction: column;
-    overflow: scroll;
+    overflow: hidden;
   }
 
   button {

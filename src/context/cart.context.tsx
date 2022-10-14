@@ -19,8 +19,12 @@ type CartContextType = {
   cartItems: ProductType[];
   setCartItems?: Dispatch<SetStateAction<ProductType[] | ProductType>>;
   addItemToCart: Dispatch<SetStateAction<any>>;
+  removeItemToCart: Dispatch<SetStateAction<any>>;
+  deleteItemFromCart: Dispatch<SetStateAction<any>>;
   cartCount: number;
   setCartCount?: Dispatch<SetStateAction<number>>;
+  cartTotal: number;
+  setCartTotal?: Dispatch<SetStateAction<number>>;
 };
 
 const addCartItem = (
@@ -29,15 +33,38 @@ const addCartItem = (
 ): any => {
   const exist = cartItems.find((cartItem) => cartItem.id === productToAdd.id);
   if (exist) {
-    return cartItems.map((cartItem) => {
-      if (cartItem.id === productToAdd.id) {
-        return { ...cartItem, quantity: cartItem.quantity! + 1 };
-      } else {
-        return cartItem;
-      }
-    });
+    return cartItems.map((cartItem) =>
+      cartItem.id === productToAdd.id
+        ? { ...cartItem, quantity: cartItem.quantity! + 1 }
+        : cartItem
+    );
   }
   return [...cartItems, { ...productToAdd, quantity: 1 }];
+};
+
+const removeCartItem = (
+  cartItems: ProductType[],
+  cartItemToRemove: ProductType
+): any => {
+  const exist = cartItems.find(
+    (cartItem) => cartItem.id === cartItemToRemove.id
+  );
+  if (exist!.quantity === 1) {
+    return cartItems.filter((cartItem) => cartItem.id !== cartItemToRemove.id);
+  }
+
+  return cartItems.map((cartItem) =>
+    cartItem.id === cartItemToRemove.id
+      ? { ...cartItem, quantity: cartItem.quantity! - 1 }
+      : cartItem
+  );
+};
+
+const deleteCartItem = (
+  cartItems: ProductType[],
+  cartItemToDelete: ProductType
+): any => {
+  return cartItems.filter((cartItem) => cartItem.id !== cartItemToDelete.id);
 };
 
 export const CartContext = createContext<CartContextType>({
@@ -46,19 +73,32 @@ export const CartContext = createContext<CartContextType>({
   cartItems: [],
   setCartItems: () => {},
   addItemToCart: () => {},
+  removeItemToCart: () => {},
+  deleteItemFromCart: () => {},
   cartCount: 0,
   setCartCount: () => {},
+  cartTotal: 0,
+  setCartTotal: () => {},
 });
 
 export const CartProvider: React.FC<CartInterfacace> = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0);
 
   useEffect(() => {
     setCartCount(
-      cartItems.reduce((total: number, cartItem:ProductType)=>{
-        return total + cartItem.quantity;
+      cartItems.reduce((total: number, cartItem: ProductType) => {
+        return total + cartItem.quantity!;
+      }, 0)
+    );
+  }, [cartItems]);
+
+  useEffect(() => {
+    setCartTotal(
+      cartItems.reduce((total: number, cartItem: ProductType) => {
+        return total + cartItem.quantity! * cartItem.price!;
       }, 0)
     );
   }, [cartItems]);
@@ -67,9 +107,26 @@ export const CartProvider: React.FC<CartInterfacace> = ({ children }) => {
     setCartItems(addCartItem(cartItems, productToAdd));
   };
 
+  const removeItemToCart = (cartItemToRemove: ProductType) => {
+    setCartItems(removeCartItem(cartItems, cartItemToRemove));
+  };
+
+  const deleteItemFromCart = (cartItemToDele: ProductType) => {
+    setCartItems(deleteCartItem(cartItems, cartItemToDele));
+  };
+
   return (
     <CartContext.Provider
-      value={{ isCartOpen, setIsCartOpen, addItemToCart, cartItems, cartCount }}
+      value={{
+        isCartOpen,
+        setIsCartOpen,
+        addItemToCart,
+        removeItemToCart,
+        deleteItemFromCart,
+        cartItems,
+        cartCount,
+        cartTotal,
+      }}
     >
       {children}
     </CartContext.Provider>

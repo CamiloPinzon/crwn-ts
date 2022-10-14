@@ -1,17 +1,11 @@
 import { createContext, ReactNode, useState } from "react";
 
 import PRODUCTS_DATA from "../shop.data.json";
+import { ProductType } from "../types/product.type";
 
 interface ProductsInterface {
   children: ReactNode;
 }
-
-export type ProductType = {
-  id?: number;
-  name?: string;
-  imageUrl?: string;
-  price?: number;
-};
 
 export type ProductsType = [product: ProductType];
 

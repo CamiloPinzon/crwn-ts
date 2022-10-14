@@ -13,7 +13,7 @@ const CartItem = ({ cartItem }: CartItemInterface) => {
       <img src={imageUrl} alt={name}/>
       <div className="item-details">
         <span>{name}</span>
-        <span>{quantity} x ${price*quantity}</span>
+        <span>{quantity} x ${price!*quantity!}</span>
       </div>
     </div>
   );
