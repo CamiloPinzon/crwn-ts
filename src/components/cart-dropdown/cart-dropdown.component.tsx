@@ -18,8 +18,8 @@ const CartDropdown = () => {
   return (
     <div className="cart-dropdown-container">
       <div className="cart-items">
-        {cartItems.map((item) => (
-          <CartItem cartItem={item} />
+        {cartItems.map((item, index) => (
+          <CartItem key={index} cartItem={item} />
         ))}
       </div>
       <Button onClick={goToCheckoutHandler}> Go to checkout</Button>

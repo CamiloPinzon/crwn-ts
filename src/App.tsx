@@ -8,12 +8,12 @@ import Shop from "./routes/shop/shop.component";
 import Checkout from "./routes/checkout/checkout.component";
 
 const App = () => {
-  const { SHOP, AUTHENTICATION, CHECKOUT } = RoutesLinks;
+  const { ANY, SHOP, AUTHENTICATION, CHECKOUT } = RoutesLinks;
   return (
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path={SHOP} element={<Shop />} />
+        <Route path={`${SHOP}${ANY}`} element={<Shop />} />
         <Route path={AUTHENTICATION} element={<Authentication />} />
         <Route path={CHECKOUT} element={<Checkout />} />
       </Route>
